@@ -59,4 +59,4 @@ Evita chocar con los enemigos.
 
 Cada enemigo destruido suma 1 punto.
 
-Enter → reinicia tras Game Over.
+Enter → reinicia tras Game Over.# icebergQuest
