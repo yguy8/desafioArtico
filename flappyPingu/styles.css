@@ -1,0 +1,74 @@
+:root {
+  --bg-top: #001f3f;
+  --bg-bottom: #0074d9;
+  --ice: #e0f7fa;
+  --accent: #00bcd4;
+  --panel: rgba(0, 34, 68, 0.7);
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  display: flex; flex-direction: column; align-items: center;
+  background: linear-gradient(var(--bg-top), var(--bg-bottom));
+  color: var(--white); font-family: system-ui, Arial, sans-serif;
+}
+
+.topbar {
+  width: 100%; max-width: 480px; display: flex; justify-content: space-between;
+  align-items: center; padding: 8px 12px;
+}
+.ice-title {
+  margin: 0; font-size: 1.4rem; color: var(--ice);
+  text-shadow: 2px 2px 8px #00f, 0 0 18px #0ff;
+}
+.controls button {
+  background: var(--accent); border: none; color: var(--white);
+  border-radius: 8px; padding: 8px 10px; margin-left: 6px; cursor: pointer;
+}
+.controls button:hover { opacity: 0.9; }
+
+.game-wrap {
+  position: relative; width: 100%; max-width: 480px;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+#game {
+  width: 100%; height: auto; border: 2px solid var(--white);
+  background: linear-gradient(#003, #046);
+  border-radius: 8px;
+}
+
+.hud {
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 16px; background: rgba(0,0,0,0.25);
+  padding: 6px 10px; border-radius: 10px; font-weight: bold;
+}
+
+.menu {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; gap: 12px; text-align: center;
+  background: linear-gradient(transparent, rgba(0,0,0,0.35));
+}
+.menu h2 { margin: 0 0 6px; }
+.menu .options { display: flex; gap: 10px; align-items: center; }
+.menu button {
+  background: var(--accent); border: none; color: var(--white);
+  padding: 8px 12px; border-radius: 8px; cursor: pointer;
+}
+.menu select { padding: 6px; border-radius: 6px; }
+
+.overlay.hidden { display: none; }
+.overlay {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: rgba(0,0,0,0.45);
+}
+.panel {
+  background: var(--panel); padding: 16px 18px; border-radius: 10px;
+  text-align: center; width: 80%;
+}
+
+.footer { margin: 12px 0 20px; }
+.footer a { color: var(--ice); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }

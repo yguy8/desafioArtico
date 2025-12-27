@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pingüino Flappy en el Iceberg</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="ice-title">Pingüino Flappy</h1>
+    <div class="controls">
+      <button id="btn-sound" aria-label="Sonido">🔊</button>
+      <button id="btn-pause" aria-label="Pausa">⏸️</button>
+      <button id="btn-restart" aria-label="Reiniciar">🔄</button>
+    </div>
+  </header>
+
+  <main class="game-wrap">
+    <canvas id="game" width="420" height="720" aria-label="Lienzo del juego"></canvas>
+
+    <div id="hud" class="hud">
+      <div class="score">Puntuación: <span id="score">0</span></div>
+      <div class="best">Mejor: <span id="best">0</span></div>
+    </div>
+
+    <div id="menu" class="menu">
+      <h2>Pingüinos misión iceberg</h2>
+      <p>Toca o presiona espacio para saltar. Evita las estalactitas y llega lejos.</p>
+      <div class="options">
+        <label>Dificultad:
+          <select id="difficulty">
+            <option value="easy">Fácil</option>
+            <option value="normal" selected>Normal</option>
+            <option value="hard">Difícil</option>
+          </select>
+        </label>
+        <button id="btn-play">Jugar</button>
+      </div>
+      <small>Controles: Espacio / Click / Toque. Pausa: P.</small>
+    </div>
+
+    <div id="gameover" class="overlay hidden">
+      <div class="panel">
+        <h3>¡Fin del juego!</h3>
+        <p>Tu puntuación: <span id="final-score">0</span></p>
+        <p>Mejor: <span id="final-best">0</span></p>
+        <button id="btn-try-again">Intentar de nuevo</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+
+  <script src="game.js"></script>
+</body>
+</html>
