@@ -1,0 +1,163 @@
+:root{
+    --azul-profundo:#343961;
+    --gris-polar:#ccced9;
+    --azul-oscuro:#657ba6;
+    --azul-opaco:#8a9cbf;
+    --azul-marino:#364373;
+    --azul-chicle:#58c0fd;
+    --azul-cielo:#b3f0ff;
+    --hielo:#b3f0ff;
+}
+
+body {
+    margin: 0;
+    font-family: 'Verdana', sans-serif;
+    background-color: var(--azul-profundo);
+    color: var(--gris-polar);
+    text-align: center;
+}
+
+/*  === Encabezado ===  */
+header {
+    padding: 60px 20px;
+}
+
+header h1 {
+    font-size: 4em;
+    color: var(--azul-chicle);
+    text-shadow: 
+        2px 2px 6px var(--azul-profundo),
+        0 0 15px var(--azul-chicle),
+        0 0 25px var(--azul-chicle);
+    letter-spacing: 5px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header p{
+    font-size: 2rem;
+    color:var(--hielo);
+}
+
+/* Contenedor de cubos */
+.ice-cubes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Cubo de hielo */
+.cube {
+    width: 40px;
+    height: 40px;
+    background: var(--hielo);
+    border: 2px solid var(--azul-chicle);
+    border-radius: 6px;
+    box-shadow: inset -3px -3px 6px rgba(255,255,255,0.6),
+                inset 3px 3px 6px rgba(0,0,0,0.2),
+                0 0 10px var(--azul-cielo);
+    transform: rotate(10deg);
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Animación para que floten */
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(10deg); }
+    50% { transform: translateY(-10px) rotate(10deg); }
+}
+
+/* === CARTAS DE JUEGOS === */
+
+.guia {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 40px; 
+    padding: 40px;
+    justify-items: center;
+}
+
+/* Bloque que agrupa card + botón */
+.card-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+}
+
+.card {
+    perspective: 1000px;
+    width: 100%;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border: 2px solid var(--azul-chicle);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.card-front {
+    background: rgba(255,255,255,0.1);
+    color: var(--hielo);
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+svg{
+    animation: float 4s ease-in-out infinite;
+}
+
+.card-back {
+    background: var(--azul-oscuro);
+    color: #fff;
+    transform: rotateY(180deg);
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+/* Flip al hacer hover */
+.card:hover .card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Botones */
+.btn {
+    margin-top: 60px;
+    padding: 10px 20px;
+    background: var(--azul-chicle);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 10px var(--azul-chicle);
+}
+
+.btn:hover {
+    background: var(--azul-opaco);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--azul-cielo), 0 0 25px var(--azul-chicle);
+}
+
+/* === FOOTER === */
+footer {
+    margin-top: 50px;
+    padding: 20px;
+    font-size: 0.9em;
+    color: var(--hielo);
+}

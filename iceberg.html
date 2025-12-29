@@ -1,21 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ice berg </title>
+    <title>ICEBERG QUEST</title>
     <link rel="stylesheet" href="iceberg.css">
 </head>
 <body>
+<header>
     <h1>ICEBERG QUEST</h1>
-    <nav>
-        <ul>
-            <li><a href="flappyPingu/flapingu.html"></a>Flappy Pingüinos </li>
-            <li><a href="endlessRunner/endlessRunner.html">Cubos de hielo</a></li>
-            <li><a href="pesca/pesca.html"></a>Ir de pesca</li>
-            <li><a href="shooter/shooter.html">Batalla en la nieve</a></li>
-            <li><a href="carreras/carrera.html">Carerras en el hielo</a></li>
-        </ul>
-    </nav>
+    <p>Misiones en el ICEBERG</p>
+    <div class="ice-cubes">
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+    </div>
+</header>
+
+
+<section class="guia">
+    <!-- Flappy Pingüinos -->
+    <div class="card-block">
+        <div class="card" id="flappy">
+            <div class="card-inner">
+                <div class="card-front">
+                    <h2>Flappy Pingüinos</h2>
+                </div>
+                <div class="card-back">
+                    <p>
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#58c0fd" class="icon icon-tabler icons-tabler-filled icon-tabler-device-gamepad"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 5a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-16a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3zm-12 4l-.117 .007a1 1 0 0 0 -.883 .993v1h-1a1 1 0 0 0 -1 1l.007 .117a1 1 0 0 0 .993 .883h1v1a1 1 0 0 0 1 1l.117 -.007a1 1 0 0 0 .883 -.993v-1h1a1 1 0 0 0 1 -1l-.007 -.117a1 1 0 0 0 -.993 -.883h-1v-1a1 1 0 0 0 -1 -1m10 3a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1m-3 -2a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1" /></svg>
+                        Cómo jugar:<br></h4>
+                        Barra espaciadora → el pingüino salta.<br>
+                        Click → también salta.<br>
+                        Enter → reinicia.<br>
+                        P → pausa.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <a href="flappyPingu/flapingu.html" class="btn">Jugar</a>
+    </div>
+
+    <!-- Cubos de hielo -->
+    <div class="card-block">
+        <div class="card" id="runner">
+            <div class="card-inner">
+                <div class="card-front">
+                    <h2>Cubos de hielo</h2>
+                </div>
+                <div class="card-back">
+                    <p>
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#58c0fd" class="icon icon-tabler icons-tabler-filled icon-tabler-device-gamepad"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 5a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-16a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3zm-12 4l-.117 .007a1 1 0 0 0 -.883 .993v1h-1a1 1 0 0 0 -1 1l.007 .117a1 1 0 0 0 .993 .883h1v1a1 1 0 0 0 1 1l.117 -.007a1 1 0 0 0 .883 -.993v-1h1a1 1 0 0 0 1 -1l-.007 -.117a1 1 0 0 0 -.993 -.883h-1v-1a1 1 0 0 0 -1 -1m10 3a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1m-3 -2a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1" /></svg>
+                        Cómo jugar:<br></h4>
+                        Espacio o click → saltar.<br>
+                        Evita chocar con los bloques.<br>
+                        Cada obstáculo suma 1 punto.<br>
+                        Enter → reinicia.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <a href="endlessRunner/endlessRunner.html" class="btn">Jugar</a>
+    </div>
+
+    <!-- Ir de pesca -->
+    <div class="card-block">
+        <div class="card" id="pesca">
+            <div class="card-inner">
+                <div class="card-front">
+                    <h2>Ir de pesca</h2>
+                </div>
+                <div class="card-back">
+                    <p>
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#58c0fd" class="icon icon-tabler icons-tabler-filled icon-tabler-device-gamepad"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 5a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-16a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3zm-12 4l-.117 .007a1 1 0 0 0 -.883 .993v1h-1a1 1 0 0 0 -1 1l.007 .117a1 1 0 0 0 .993 .883h1v1a1 1 0 0 0 1 1l.117 -.007a1 1 0 0 0 .883 -.993v-1h1a1 1 0 0 0 1 -1l-.007 -.117a1 1 0 0 0 -.993 -.883h-1v-1a1 1 0 0 0 -1 -1m10 3a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1m-3 -2a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1" /></svg>
+                        Cómo jugar:<br></h4>
+                        Flechas ← →  mover la caña.<br>
+                        Espacio → bajar el anzuelo.<br>
+                        Pez naranja → +10.<br>
+                        Pez rojo → +15.<br>
+                        Basura → -5.<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <a href="pesca/pesca.html" class="btn">Jugar</a>
+    </div>
+
+    <!-- Batalla en la nieve -->
+    <div class="card-block">
+        <div class="card" id="shooter">
+            <div class="card-inner">
+                <div class="card-front">
+                    <h2>Batalla en la nieve</h2>
+                </div>
+                <div class="card-back">
+                    <p>
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#58c0fd" class="icon icon-tabler icons-tabler-filled icon-tabler-device-gamepad"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 5a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-16a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3zm-12 4l-.117 .007a1 1 0 0 0 -.883 .993v1h-1a1 1 0 0 0 -1 1l.007 .117a1 1 0 0 0 .993 .883h1v1a1 1 0 0 0 1 1l.117 -.007a1 1 0 0 0 .883 -.993v-1h1a1 1 0 0 0 1 -1l-.007 -.117a1 1 0 0 0 -.993 -.883h-1v-1a1 1 0 0 0 -1 -1m10 3a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1m-3 -2a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1" /></svg>
+                        Cómo jugar:<br></h4>
+                        Flechas ↑ ↓ para moverte.<br>
+                        Espacio → disparar.<br>
+                        Evita enemigos.<br>
+                        Enter → reinicia.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <a href="shooter/shooter.html" class="btn">Jugar</a>
+    </div>
+
+    <!-- Carreras en el hielo -->
+    <div class="card-block">
+        <div class="card" id="carrera">
+            <div class="card-inner">
+                <div class="card-front">
+                    <h2>Carreras en el hielo</h2>
+                </div>
+                <div class="card-back">
+                    <p>
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#58c0fd" class="icon icon-tabler icons-tabler-filled icon-tabler-device-gamepad"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 5a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-16a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3zm-12 4l-.117 .007a1 1 0 0 0 -.883 .993v1h-1a1 1 0 0 0 -1 1l.007 .117a1 1 0 0 0 .993 .883h1v1a1 1 0 0 0 1 1l.117 -.007a1 1 0 0 0 .883 -.993v-1h1a1 1 0 0 0 1 -1l-.007 -.117a1 1 0 0 0 -.993 -.883h-1v-1a1 1 0 0 0 -1 -1m10 3a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1m-3 -2a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1" /></svg>
+                        Cómo jugar:<br></h4>
+                        Flechas ← → para moverte.<br>
+                        Evita obstáculos.<br>
+                        La distancia aumenta.<br>
+                        Enter → reinicia.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <a href="carreras/carrera.html" class="btn">Jugar</a>
+    </div>
+</section>
+
+<footer>
+    © 2025 ICEBERG QUEST - Todos los derechos reservados
+</footer>
 </body>
 </html>
