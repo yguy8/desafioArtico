@@ -85,11 +85,25 @@
 
   btnPlay.onclick = () => start();
   btnTryAgain.onclick = () => start();
-  btnPause.onclick = () => { if (running) paused = !paused; };
+  btnPause.onclick = () => { 
+  paused = !paused; 
+  btnPause.innerHTML = paused 
+    ? `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+         <path d="M9 4h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h2a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2z" />
+         <path d="M17 4h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h2a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2z" />
+       </svg>`
+    : `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+         <path d="M6 4v16a1 1 0 0 0 1.524 .852l13 -8a1 1 0 0 0 0 -1.704l-13 -8a1 1 0 0 0 -1.524 .852z" />
+       </svg>`;
+};
+
   btnRestart.onclick = () => { start(); };
   btnSound.onclick = () => {
     soundOn = !soundOn;
-    btnSound.textContent = soundOn ? "🔊" : "🔇";
+btnSound.innerHTML = soundOn 
+  ? `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-volume"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8a5 5 0 0 1 0 8" /><path d="M17.7 5a9 9 0 0 1 0 14" /><path d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5" /></svg>`
+  : `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-volume-off"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8a5 5 0 0 1 1.912 4.934m-1.377 2.602a5 5 0 0 1 -.535 .464" /><path d="M17.7 5a9 9 0 0 1 2.362 11.086m-1.676 2.299a9 9 0 0 1 -.686 .615" /><path d="M9.069 5.054l.431 -.554a.8 .8 0 0 1 1.5 .5v2m0 4v8a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l1.294 -1.664" /><path d="M3 3l18 18" /></svg>`;
+
   };
   selDiff.onchange = () => { cfg = configByDiff[selDiff.value]; };
 
@@ -302,36 +316,60 @@
     ctx.closePath(); ctx.fill();
   }
 
-  // Dibujo del pingüino (sprite en canvas)
   function drawPenguin(p) {
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.angle);
+  ctx.save();
+  ctx.translate(p.x, p.y);
+  ctx.rotate(p.angle);
 
-    // cuerpo
-    ctx.fillStyle = "#1c2530"; // negro
-    roundRect(ctx, -22, -22, 44, 56, 20, true, false);
-    // barriga
-    ctx.fillStyle = "#ffffff";
-    roundRect(ctx, -16, -8, 32, 34, 12, true, false);
-    // pico
-    ctx.fillStyle = "#ffa726";
-    ctx.beginPath();
-    ctx.moveTo(8, -6); ctx.lineTo(26, 0); ctx.lineTo(8, 6); ctx.closePath(); ctx.fill();
-    // ojos
-    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(-4, -10, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "#000"; ctx.beginPath(); ctx.arc(-3, -10, 2, 0, Math.PI * 2); ctx.fill();
-    // alas
-    ctx.fillStyle = "#1c2530";
-    roundRect(ctx, -28, -6, 12, 24, 6, true, false);
-    roundRect(ctx, 16, -6, 12, 24, 6, true, false);
-    // pies
-    ctx.fillStyle = "#ffb74d";
-    roundRect(ctx, -14, 22, 12, 6, 3, true, false);
-    roundRect(ctx, 2, 22, 12, 6, 3, true, false);
+  // cuerpo ovalado
+  ctx.fillStyle = "#1c2530"; // negro
+  ctx.beginPath();
+  ctx.ellipse(0, 0, 28, 40, 0, 0, Math.PI * 2);
+  ctx.fill();
 
-    ctx.restore();
-  }
+  // barriga blanca
+  ctx.fillStyle = "#ffffff";
+  ctx.beginPath();
+  ctx.ellipse(6, 6, 18, 28, 0, 0, Math.PI * 2); // desplazada a la derecha
+  ctx.fill();
+
+  // pico a la derecha
+  ctx.fillStyle = "#ffa726";
+  ctx.beginPath();
+  ctx.moveTo(20, -4);
+  ctx.lineTo(34, 0);
+  ctx.lineTo(20, 4);
+  ctx.closePath();
+  ctx.fill();
+
+  // ojo a la derecha
+  ctx.fillStyle = "#fff";
+  ctx.beginPath();
+  ctx.arc(12, -12, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#000";
+  ctx.beginPath();
+  ctx.arc(12, -12, 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // ala (solo una visible en perfil)
+  ctx.fillStyle = "#1c2530";
+  ctx.beginPath();
+  ctx.ellipse(-10, 0, 8, 20, -Math.PI / 6, 0, Math.PI * 2); // invertida horizontalmente
+  ctx.fill();
+
+  // pies
+  ctx.fillStyle = "#ffb74d";
+  ctx.beginPath();
+  ctx.ellipse(16, 34, 8, 4, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(8, 34, 8, 4, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
 
   function roundRect(ctx, x, y, w, h, r, fill, stroke) {
     ctx.beginPath();

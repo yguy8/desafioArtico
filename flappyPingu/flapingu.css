@@ -1,74 +1,125 @@
 :root {
-  --bg-top: #001f3f;
-  --bg-bottom: #0074d9;
-  --ice: #e0f7fa;
-  --accent: #00bcd4;
-  --panel: rgba(0, 34, 68, 0.7);
-  --white: #ffffff;
+  --azul-profundo: #343961;
+  --gris-polar: #ccced9;
+  --azul-oscuro: #657ba6;
+  --azul-opaco: #8a9cbf;
+  --azul-marino: #364373;
+  --azul-chicle: #58c0fd;
+  --azul-cielo: #b3f0ff;
+  --hielo: #b3f0ff;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; height: 100%; }
 body {
-  display: flex; flex-direction: column; align-items: center;
-  background: linear-gradient(var(--bg-top), var(--bg-bottom));
-  color: var(--white); font-family: system-ui, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--azul-profundo); /* fondo sólido */
+  color: var(--gris-polar);
+  font-family: system-ui, Arial, sans-serif;
 }
 
 .topbar {
-  width: 100%; max-width: 480px; display: flex; justify-content: space-between;
-  align-items: center; padding: 8px 12px;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
 }
+
 .ice-title {
-  margin: 0; font-size: 1.4rem; color: var(--ice);
-  text-shadow: 2px 2px 8px #00f, 0 0 18px #0ff;
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--hielo);
+  text-shadow: 2px 2px 6px var(--azul-chicle);
 }
+
 .controls button {
-  background: var(--accent); border: none; color: var(--white);
-  border-radius: 8px; padding: 8px 10px; margin-left: 6px; cursor: pointer;
+  background: var(--azul-chicle);
+  border: none;
+  color: var(--azul-marino);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-left: 6px;
+  cursor: pointer;
+  font-weight: bold;
 }
-.controls button:hover { opacity: 0.9; }
+.controls button:hover { background: var(--azul-cielo); }
 
 .game-wrap {
-  position: relative; width: 100%; max-width: 480px;
-  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #game {
-  width: 100%; height: auto; border: 2px solid var(--white);
-  background: linear-gradient(#003, #046);
+  width: 100%;
+  height: auto;
+  border: 2px solid var(--gris-polar);
+  background: var(--azul-oscuro);
   border-radius: 8px;
 }
 
 .hud {
-  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 16px; background: rgba(0,0,0,0.25);
-  padding: 6px 10px; border-radius: 10px; font-weight: bold;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  background: rgba(52, 57, 97, 0.7); /* azul-profundo con transparencia */
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  color: var(--hielo);
 }
 
 .menu {
-  position: absolute; inset: 0; display: flex; flex-direction: column;
-  justify-content: center; align-items: center; gap: 12px; text-align: center;
-  background: linear-gradient(transparent, rgba(0,0,0,0.35));
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  background: rgba(52, 57, 97, 0.5); /* overlay azul */
 }
-.menu h2 { margin: 0 0 6px; }
+.menu h2 { margin: 0 0 6px; color: var(--hielo); }
 .menu .options { display: flex; gap: 10px; align-items: center; }
 .menu button {
-  background: var(--accent); border: none; color: var(--white);
-  padding: 8px 12px; border-radius: 8px; cursor: pointer;
+  background: var(--azul-chicle);
+  border: none;
+  color: var(--azul-marino);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
 }
+.menu button:hover { background: var(--azul-cielo); }
 .menu select { padding: 6px; border-radius: 6px; }
 
 .overlay.hidden { display: none; }
 .overlay {
-  position: absolute; inset: 0; display: grid; place-items: center;
-  background: rgba(0,0,0,0.45);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(52, 57, 97, 0.6);
 }
 .panel {
-  background: var(--panel); padding: 16px 18px; border-radius: 10px;
-  text-align: center; width: 80%;
+  background: var(--azul-opaco);
+  padding: 16px 18px;
+  border-radius: 10px;
+  text-align: center;
+  width: 80%;
+  color: var(--gris-polar);
 }
 
 .footer { margin: 12px 0 20px; }
-.footer a { color: var(--ice); text-decoration: none; }
+.footer a { color: var(--azul-cielo); text-decoration: none; }
 .footer a:hover { text-decoration: underline; }

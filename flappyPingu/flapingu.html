@@ -10,14 +10,14 @@
   <header class="topbar">
     <h1 class="ice-title">Pingüino Flappy</h1>
     <div class="controls">
-      <button id="btn-sound" aria-label="Sonido">🔊</button>
-      <button id="btn-pause" aria-label="Pausa">⏸️</button>
-      <button id="btn-restart" aria-label="Reiniciar">🔄</button>
+      <button id="btn-sound" aria-label="Sonido"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-volume"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8a5 5 0 0 1 0 8" /><path d="M17.7 5a9 9 0 0 1 0 14" /><path d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5" /></svg></button>
+      <button id="btn-pause" aria-label="Pausa"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-player-pause"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 4h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h2a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2z" /><path d="M17 4h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h2a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2z" /></svg></button>
+      <button id="btn-restart" aria-label="Reiniciar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-restore"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3.06 13a9 9 0 1 0 .49 -4.087" /><path d="M3 4.001v5h5" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg></button>
     </div>
   </header>
 
   <main class="game-wrap">
-    <canvas id="game" width="420" height="720" aria-label="Lienzo del juego"></canvas>
+    <canvas id="game" width="500" height="500" aria-label="Lienzo del juego"></canvas>
 
     <div id="hud" class="hud">
       <div class="score">Puntuación: <span id="score">0</span></div>
@@ -50,9 +50,6 @@
     </div>
   </main>
 
-  <footer class="footer">
-    <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
-  </footer>
 
   <script src="flapingu.js"></script>
 </body>
