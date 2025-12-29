@@ -23,6 +23,7 @@ const scoreEl = document.getElementById("score");
 let player = { x: 80, y: 0, vy: 0, w: 40, h: 40, jumping: false };
 player.y = groundY - player.h;
 
+let gameSpeed = 6;
 let gravity = 0.6, jump = -12;
 let obstacles = [];
 let frame = 0, score = 0, gameOver = false;
@@ -234,24 +235,31 @@ function update() {
   }
 
   // Movimiento obstáculos
-  obstacles.forEach(o => o.x -= 6);
+  obstacles.forEach(o => o.x -= gameSpeed);
 
-  // Colisiones AABB (coincide con dibujo top-left)
-  obstacles.forEach(o => {
-    if (
-      player.x < o.x + o.w &&
-      player.x + player.w > o.x &&
-      player.y < o.y + o.h &&
-      player.y + player.h > o.y
-    ) {
-      gameOver = true;
+ // Colisiones AABB (coincide con dibujo top-left)
+obstacles.forEach(o => {
+  if (
+    player.x < o.x + o.w &&
+    player.x + player.w > o.x &&
+    player.y < o.y + o.h &&
+    player.y + player.h > o.y
+  ) {
+    gameOver = true;
+  }
+
+  if (!o.passed && o.x + o.w < player.x) {
+    score++;
+    o.passed = true;
+    scoreEl.textContent = score;
+
+    // cada 20 obstáculos aumenta la velocidad
+    if (score % 20 === 0) {
+      gameSpeed += 1; // sube la velocidad (ajusta el incremento a tu gusto)
     }
-    if (!o.passed && o.x + o.w < player.x) {
-      score++;
-      o.passed = true;
-      scoreEl.textContent = score;
-    }
-  });
+  }
+});
+
 
   // Filtrar fuera de pantalla
   obstacles = obstacles.filter(o => o.x + o.w > 0);
