@@ -86,22 +86,18 @@ const barrierX = 150;
 // Dibujar pingüino (jugador)
 function drawPlayer() {
   let p = player;
-  // cuerpo
   ctx.fillStyle="black";
   ctx.beginPath();
   ctx.ellipse(p.x+p.w/2, p.y+p.h/2, p.w/2, p.h/2, 0, 0, Math.PI*2);
   ctx.fill();
-  // barriga blanca
   ctx.fillStyle="white";
   ctx.beginPath();
   ctx.ellipse(p.x+p.w/2, p.y+p.h/2+10, p.w/3, p.h/3, 0, 0, Math.PI*2);
   ctx.fill();
-  // cabeza
   ctx.fillStyle="black";
   ctx.beginPath();
   ctx.arc(p.x+p.w/2, p.y+15, p.w/3, 0, Math.PI*2);
   ctx.fill();
-  // ojos
   ctx.fillStyle="white";
   ctx.beginPath();
   ctx.arc(p.x+p.w/2-8, p.y+12, 5, 0, Math.PI*2);
@@ -112,7 +108,6 @@ function drawPlayer() {
   ctx.arc(p.x+p.w/2-8, p.y+12, 2, 0, Math.PI*2);
   ctx.arc(p.x+p.w/2+8, p.y+12, 2, 0, Math.PI*2);
   ctx.fill();
-  // pico
   ctx.fillStyle="orange";
   ctx.beginPath();
   ctx.moveTo(p.x+p.w/2-5, p.y+20);
@@ -132,41 +127,75 @@ function drawBullets() {
   });
 }
 
-// Dibujar cormorán imperial (enemigo simplificado)
+// Dibujar cormorán imperial
 function drawEnemies() {
   enemies.forEach(e=>{
+    const cx = e.x + e.w/2;
+    const cy = e.y + e.h/2;
+
+    // cuerpo principal
     ctx.fillStyle="darkslategray";
     ctx.beginPath();
-    ctx.ellipse(e.x+e.w/2, e.y+e.h/2, e.w/2, e.h/2, 0, 0, Math.PI*2);
+    ctx.ellipse(cx, cy, e.w/2, e.h/2.2, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // pecho blanco
+    ctx.fillStyle="white";
+    ctx.beginPath();
+    ctx.ellipse(cx, cy+10, e.w/3, e.h/3.5, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // cabeza negra
+    ctx.fillStyle="black";
+    ctx.beginPath();
+    ctx.arc(cx, e.y+12, e.w/3.5, 0, Math.PI*2);
+    ctx.fill();
+
+    // ojo
+    ctx.fillStyle="white";
+    ctx.beginPath();
+    ctx.arc(cx-6, e.y+10, 4, 0, Math.PI*2);
     ctx.fill();
     ctx.fillStyle="black";
     ctx.beginPath();
-    ctx.arc(e.x+e.w/2, e.y+10, e.w/3, 0, Math.PI*2);
+    ctx.arc(cx-6, e.y+10, 2, 0, Math.PI*2);
     ctx.fill();
-    ctx.fillStyle="yellow";
+
+    // pico amarillo
+    ctx.fillStyle="gold";
     ctx.beginPath();
-    ctx.moveTo(e.x+e.w/2, e.y+10);
-    ctx.lineTo(e.x+e.w/2+15, e.y+15);
-    ctx.lineTo(e.x+e.w/2, e.y+20);
+    ctx.moveTo(cx, e.y+12);
+    ctx.lineTo(cx+25, e.y+16);
+    ctx.lineTo(cx, e.y+20);
     ctx.closePath();
     ctx.fill();
+
+    // alas más pequeñas y pegadas al cuerpo
     ctx.fillStyle="black";
-    ctx.fillRect(e.x-10, e.y+e.h/2-10, 10, 30);
-    ctx.fillRect(e.x+e.w, e.y+e.h/2-10, 10, 30);
+    ctx.beginPath();
+    ctx.ellipse(cx - (e.w/2.2), cy, 8, 15, 0, 0, Math.PI*2); // ala izquierda
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(cx + (e.w/2.2), cy, 8, 15, 0, 0, Math.PI*2); // ala derecha
+    ctx.fill();
+
+    // patas naranjas
+    ctx.fillStyle="orange";
+    ctx.fillRect(cx-10, e.y+e.h-5, 5, 12);
+    ctx.fillRect(cx+5, e.y+e.h-5, 5, 12);
   });
 }
+
 
 // Actualizar lógica
 function update() {
   if(gameOver) return;
 
-  // Movimiento jugador limitado por la barrera
   player.y += player.vy;
   if(player.y<0) player.y=0;
   if(player.y+player.h>canvas.height) player.y=canvas.height-player.h;
-  if(player.x<barrierX) player.x=barrierX; // no puede pasar la barrera
+  if(player.x<barrierX) player.x=barrierX;
 
-  // Balas
   bullets.forEach((b,i)=>{
     b.x+=8;
     if(b.x>canvas.width) bullets.splice(i,1);
@@ -177,11 +206,11 @@ function update() {
         bullets.splice(i,1);
         score++;
         scoreEl.textContent=score;
+        onEnemyHit(); // sonido al eliminar enemigo
       }
     });
   });
 
-  // Enemigos
   if(Math.random()<0.02){
     let size=50;
     enemies.push({x:canvas.width, y:Math.random()*(canvas.height-80), w:size, h:size});
@@ -189,14 +218,14 @@ function update() {
   enemies.forEach((e,i)=>{
     e.x-=4;
     if(e.x+e.w<0) enemies.splice(i,1);
-    // si pasan la barrera → game over
     if(e.x<barrierX){
       gameOver=true;
+      onGameOver(); // sonido game over
     }
-    // colisión con jugador
     if(player.x<e.x+e.w && player.x+player.w>e.x &&
        player.y<e.y+e.h && player.y+player.h>e.y){
       gameOver=true;
+      onGameOver();
     }
   });
 }
@@ -206,7 +235,6 @@ function draw() {
   ctx.fillStyle="#001f3f";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // dibujar barrera
   ctx.fillStyle="lightblue";
   ctx.fillRect(barrierX-5,0,10,canvas.height);
 
@@ -228,12 +256,64 @@ function loop(){
 }
 loop();
 
+// --- Sistema de sonido minimalista con AudioContext ---
+let soundOn = true;
+
+function playTone(freq, duration, type = "sine", volume = 0.08) {
+  if (!soundOn) return;
+  const ac = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  gain.gain.value = volume;
+  osc.connect(gain);
+  gain.connect(ac.destination);
+  osc.start();
+  osc.stop(ac.currentTime + duration);
+  setTimeout(() => ac.close(), duration * 1000 + 200);
+}
+
+function onShoot() {
+  playTone(800, 0.1, "square", 0.1);
+  playTone(1200, 0.08, "triangle", 0.08);
+}
+
+function onEnemyHit() {
+  playTone(1000, 0.15, "sine", 0.1);
+  playTone(1500, 0.1, "triangle", 0.08);
+}
+
+function onGameOver() {
+  const ac = new (window.AudioContext || window.webkitAudioContext)();
+  [440, 330, 220].forEach((freq, i) => {
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    gain.gain.value = 0.07;
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.start(ac.currentTime + i * 0.4);
+    osc.stop(ac.currentTime + i * 0.4 + 0.5);
+  });
+  setTimeout(() => ac.close(), 2000);
+}
+
+// Toggle sonido con tecla M
+document.addEventListener("keydown", e => {
+  if (e.code === "KeyM") {
+    soundOn = !soundOn;
+  }
+});
+
 // Controles
 document.addEventListener("keydown",e=>{
   if(e.code==="ArrowUp" || e.key==="w"){ player.vy=-6; }
   if(e.code==="ArrowDown" || e.key==="s"){ player.vy=6; }
   if(e.code==="Space"){ 
     bullets.push({x:player.x+player.w,y:player.y+player.h/2,r:6}); 
+    onShoot(); // sonido disparo
   }
   if(gameOver && e.code==="Enter"){
     player={x:80,y:canvas.height/2,w:40,h:60,vy:0};
