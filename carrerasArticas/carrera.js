@@ -61,6 +61,7 @@ icon.addEventListener("click", () => {
   }
 });
 
+//canvas del juego
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
@@ -196,13 +197,13 @@ function drawBoard(){
 
   // texto
   ctx.fillStyle = "white";
-  ctx.font = "20px sans-serif";
+  ctx.font = "20px Verdana, sans-serif";
   ctx.fillText("Distancia: " + distance, boardX + 20, boardY + 30);
   ctx.fillText("Krill: " + krillCount, boardX + 20, boardY + 60);
 
   if(boostActive){
     ctx.fillStyle = "yellow";
-    ctx.font = "16px sans-serif";
+    ctx.font = "16px Verdana, sans-serif";
     ctx.fillText("¡Acelerador activo!", boardX + 90, boardY + 60);
   }
 }

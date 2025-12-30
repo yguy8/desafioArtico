@@ -1,3 +1,4 @@
+//menu de juego que el usuario puede mover
 const menu = document.getElementById("another-games");
 const icon = document.getElementById("menu-icon");
 
@@ -60,6 +61,7 @@ icon.addEventListener("click", () => {
   }
 });
 
+//canvas del juego 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
@@ -73,19 +75,31 @@ window.addEventListener("resize", resizeCanvas);
 const scoreEl = document.getElementById("score");
 
 let hook = { x: canvas.width/2, y: 0, w: 10, h: 20, vy: 0, active: false };
-let fishes = [];
+let entities = [];
 let score = 0;
 
-// Crear peces y basura
+// sonidos
+const goodSound = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
+// sonido corto tipo game over
+const badSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+
+// Crear peces y algas
 function spawnEntity() {
-  let type = Math.random()<0.8 ? "fish" : "trash";
-  let size = 30;
-  fishes.push({
+  let type = Math.random()<0.8 ? "fish" : "alga";
+  let size = type==="fish" ? (Math.random()<0.5 ? 25 : 40) : 30; 
+  let color = "orange";
+  if(type==="fish"){
+    color = size>30 ? "red" : "yellow"; // rojos grandes, amarillos pequeños
+  } else {
+    color = "green"; // alga
+  }
+  entities.push({
     x: Math.random()*canvas.width,
     y: canvas.height-100-Math.random()*200,
     w: size,
-    h: size,
+    h: size/2,
     type: type,
+    color: color,
     vx: (Math.random()<0.5? -1:1)* (2+Math.random()*2)
   });
 }
@@ -98,41 +112,98 @@ function update() {
     if(hook.y<0){ hook.active=false; hook.y=0; hook.vy=0; }
   }
 
-  fishes.forEach(f=>{
+  entities.forEach(f=>{
     f.x+=f.vx;
-    if(f.x<0||f.x+f.w>canvas.width) f.vx*=-1;
+    // peces solo hacia adelante
+    if(f.type==="fish"){
+      if(f.vx>0 && f.x>canvas.width+50) f.x=-50;
+      if(f.vx<0 && f.x<-50) f.x=canvas.width+50;
+    } else {
+      // alga rebota
+      if(f.x<0||f.x+f.w>canvas.width) f.vx*=-1;
+    }
   });
 
   // colisiones
-  fishes.forEach((f,i)=>{
+  entities.forEach((f,i)=>{
     if(hook.active &&
        hook.x<hook.x+hook.w && hook.x+hook.w>f.x &&
        hook.y<hook.y+hook.h && hook.y+hook.h>f.y){
-      if(f.type==="fish"){ score+=10; }
-      else { score-=5; }
+      if(f.type==="fish"){ 
+        score+=10; 
+        goodSound.play();
+      }
+      else { 
+        score-=5; 
+        badSound.play();
+      }
       scoreEl.textContent="Puntos: "+score;
-      fishes.splice(i,1);
+      entities.splice(i,1);
       hook.active=false; hook.y=0; hook.vy=0;
     }
   });
+}
+
+function drawFish(f){
+  ctx.fillStyle = f.color;
+  ctx.beginPath();
+  ctx.ellipse(f.x+f.w/2, f.y+f.h/2, f.w/2, f.h/2, 0, 0, Math.PI*2);
+  ctx.fill();
+  // cola
+  ctx.beginPath();
+  ctx.moveTo(f.x, f.y+f.h/2);
+  ctx.lineTo(f.x-10, f.y);
+  ctx.lineTo(f.x-10, f.y+f.h);
+  ctx.closePath();
+  ctx.fill();
+  // ojo
+  ctx.fillStyle="white";
+  ctx.beginPath();
+  ctx.arc(f.x+f.w/2+8, f.y+f.h/2-5, 4, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle="black";
+  ctx.beginPath();
+  ctx.arc(f.x+f.w/2+8, f.y+f.h/2-5, 2, 0, Math.PI*2);
+  ctx.fill();
+}
+
+function drawAlga(f){
+  ctx.fillStyle=f.color;
+  ctx.beginPath();
+  ctx.moveTo(f.x, f.y+f.h);
+  ctx.lineTo(f.x+f.w/2, f.y); // tallo simple
+  ctx.lineTo(f.x+f.w, f.y+f.h);
+  ctx.closePath();
+  ctx.fill();
 }
 
 function draw() {
   ctx.fillStyle="#1E90FF"; // agua
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // peces y basura
-  fishes.forEach(f=>{
-    if(f.type==="fish"){ ctx.fillStyle="orange"; }
-    else { ctx.fillStyle="brown"; }
-    ctx.fillRect(f.x,f.y,f.w,f.h);
+  // peces y algas
+  entities.forEach(f=>{
+    if(f.type==="fish"){ 
+      drawFish(f);
+    } else { 
+      drawAlga(f);
+    }
   });
 
-  // caña
-  ctx.fillStyle="black";
-  ctx.fillRect(hook.x,0,2,hook.y); // cuerda
-  ctx.fillStyle="gray";
-  ctx.fillRect(hook.x-5,hook.y,hook.w,hook.h); // anzuelo
+  // caña mejorada
+  ctx.strokeStyle="black";
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(hook.x,0);
+  ctx.lineTo(hook.x,hook.y);
+  ctx.stroke();
+
+  // anzuelo curvo
+  ctx.strokeStyle="gray";
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.arc(hook.x, hook.y+hook.h/2, hook.w, Math.PI, Math.PI*2);
+  ctx.stroke();
 }
 
 function loop(){
@@ -143,9 +214,9 @@ loop();
 
 // controles
 document.addEventListener("keydown",e=>{
-  if(e.code==="ArrowLeft"){ hook.x-=20; }
-  if(e.code==="ArrowRight"){ hook.x+=20; }
-  if(e.code==="Space" && !hook.active){
+  if(e.code==="ArrowLeft" || e.key==="a"){ hook.x-=20; }
+  if(e.code==="ArrowRight" || e.key==="d"){ hook.x+=20; }
+  if((e.code==="Space" || e.key===" ") && !hook.active){
     hook.active=true; hook.vy=5;
   }
 });

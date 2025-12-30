@@ -1,3 +1,4 @@
+//menu que el usuario puede mover
 const menu = document.getElementById("another-games");
 const icon = document.getElementById("menu-icon");
 
@@ -60,6 +61,7 @@ icon.addEventListener("click", () => {
   }
 });
 
+//canvas del juego 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
@@ -72,31 +74,85 @@ window.addEventListener("resize", resizeCanvas);
 
 const scoreEl = document.getElementById("score");
 
-let player = { x: 80, y: canvas.height/2, w: 40, h: 40, vy: 0 };
+let player = { x: 80, y: canvas.height/2, w: 40, h: 60, vy: 0 };
 let bullets = [];
 let enemies = [];
 let score = 0;
 let gameOver = false;
 
-// Dibujar jugador
+// posición de la barrera
+const barrierX = 150;
+
+// Dibujar pingüino (jugador)
 function drawPlayer() {
+  let p = player;
+  // cuerpo
+  ctx.fillStyle="black";
+  ctx.beginPath();
+  ctx.ellipse(p.x+p.w/2, p.y+p.h/2, p.w/2, p.h/2, 0, 0, Math.PI*2);
+  ctx.fill();
+  // barriga blanca
   ctx.fillStyle="white";
-  ctx.fillRect(player.x, player.y, player.w, player.h);
+  ctx.beginPath();
+  ctx.ellipse(p.x+p.w/2, p.y+p.h/2+10, p.w/3, p.h/3, 0, 0, Math.PI*2);
+  ctx.fill();
+  // cabeza
+  ctx.fillStyle="black";
+  ctx.beginPath();
+  ctx.arc(p.x+p.w/2, p.y+15, p.w/3, 0, Math.PI*2);
+  ctx.fill();
+  // ojos
+  ctx.fillStyle="white";
+  ctx.beginPath();
+  ctx.arc(p.x+p.w/2-8, p.y+12, 5, 0, Math.PI*2);
+  ctx.arc(p.x+p.w/2+8, p.y+12, 5, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle="black";
+  ctx.beginPath();
+  ctx.arc(p.x+p.w/2-8, p.y+12, 2, 0, Math.PI*2);
+  ctx.arc(p.x+p.w/2+8, p.y+12, 2, 0, Math.PI*2);
+  ctx.fill();
+  // pico
+  ctx.fillStyle="orange";
+  ctx.beginPath();
+  ctx.moveTo(p.x+p.w/2-5, p.y+20);
+  ctx.lineTo(p.x+p.w/2+5, p.y+20);
+  ctx.lineTo(p.x+p.w/2, p.y+25);
+  ctx.closePath();
+  ctx.fill();
 }
 
-// Dibujar balas
+// Dibujar bolas de nieve
 function drawBullets() {
-  ctx.fillStyle="yellow";
+  ctx.fillStyle="white";
   bullets.forEach(b=>{
-    ctx.fillRect(b.x,b.y,b.w,b.h);
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+    ctx.fill();
   });
 }
 
-// Dibujar enemigos
+// Dibujar cormorán imperial (enemigo simplificado)
 function drawEnemies() {
-  ctx.fillStyle="red";
   enemies.forEach(e=>{
-    ctx.fillRect(e.x,e.y,e.w,e.h);
+    ctx.fillStyle="darkslategray";
+    ctx.beginPath();
+    ctx.ellipse(e.x+e.w/2, e.y+e.h/2, e.w/2, e.h/2, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle="black";
+    ctx.beginPath();
+    ctx.arc(e.x+e.w/2, e.y+10, e.w/3, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle="yellow";
+    ctx.beginPath();
+    ctx.moveTo(e.x+e.w/2, e.y+10);
+    ctx.lineTo(e.x+e.w/2+15, e.y+15);
+    ctx.lineTo(e.x+e.w/2, e.y+20);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle="black";
+    ctx.fillRect(e.x-10, e.y+e.h/2-10, 10, 30);
+    ctx.fillRect(e.x+e.w, e.y+e.h/2-10, 10, 30);
   });
 }
 
@@ -104,18 +160,19 @@ function drawEnemies() {
 function update() {
   if(gameOver) return;
 
-  // Movimiento jugador
+  // Movimiento jugador limitado por la barrera
   player.y += player.vy;
   if(player.y<0) player.y=0;
   if(player.y+player.h>canvas.height) player.y=canvas.height-player.h;
+  if(player.x<barrierX) player.x=barrierX; // no puede pasar la barrera
 
   // Balas
   bullets.forEach((b,i)=>{
     b.x+=8;
     if(b.x>canvas.width) bullets.splice(i,1);
     enemies.forEach((e,j)=>{
-      if(b.x<b.x+b.w && b.x+b.w>e.x &&
-         b.y<b.y+b.h && b.y+b.h>e.y){
+      if(b.x-b.r<e.x+e.w && b.x+b.r>e.x &&
+         b.y-b.r<e.y+e.h && b.y+b.r>e.y){
         enemies.splice(j,1);
         bullets.splice(i,1);
         score++;
@@ -126,12 +183,17 @@ function update() {
 
   // Enemigos
   if(Math.random()<0.02){
-    let size=30;
-    enemies.push({x:canvas.width, y:Math.random()*(canvas.height-50), w:size, h:size});
+    let size=50;
+    enemies.push({x:canvas.width, y:Math.random()*(canvas.height-80), w:size, h:size});
   }
   enemies.forEach((e,i)=>{
     e.x-=4;
     if(e.x+e.w<0) enemies.splice(i,1);
+    // si pasan la barrera → game over
+    if(e.x<barrierX){
+      gameOver=true;
+    }
+    // colisión con jugador
     if(player.x<e.x+e.w && player.x+player.w>e.x &&
        player.y<e.y+e.h && player.y+player.h>e.y){
       gameOver=true;
@@ -143,9 +205,15 @@ function update() {
 function draw() {
   ctx.fillStyle="#001f3f";
   ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // dibujar barrera
+  ctx.fillStyle="lightblue";
+  ctx.fillRect(barrierX-5,0,10,canvas.height);
+
   drawPlayer();
   drawBullets();
   drawEnemies();
+
   if(gameOver){
     ctx.fillStyle="red"; ctx.font="40px sans-serif";
     ctx.fillText("GAME OVER",canvas.width/2-100,canvas.height/2);
@@ -162,15 +230,20 @@ loop();
 
 // Controles
 document.addEventListener("keydown",e=>{
-  if(e.code==="ArrowUp"){ player.vy=-6; }
-  if(e.code==="ArrowDown"){ player.vy=6; }
-  if(e.code==="Space"){ bullets.push({x:player.x+player.w,y:player.y+player.h/2,w:10,h:4}); }
+  if(e.code==="ArrowUp" || e.key==="w"){ player.vy=-6; }
+  if(e.code==="ArrowDown" || e.key==="s"){ player.vy=6; }
+  if(e.code==="Space"){ 
+    bullets.push({x:player.x+player.w,y:player.y+player.h/2,r:6}); 
+  }
   if(gameOver && e.code==="Enter"){
-    player={x:80,y:canvas.height/2,w:40,h:40,vy:0};
+    player={x:80,y:canvas.height/2,w:40,h:60,vy:0};
     bullets=[]; enemies=[]; score=0;
     scoreEl.textContent=0; gameOver=false;
   }
 });
+
 document.addEventListener("keyup",e=>{
-  if(e.code==="ArrowUp"||e.code==="ArrowDown"){ player.vy=0; }
+  if(e.code==="ArrowUp"||e.code==="ArrowDown"||e.key==="w"||e.key==="s"){ 
+    player.vy=0; 
+  }
 });
