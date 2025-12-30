@@ -5,12 +5,13 @@ html, body {
   overflow: hidden;
   background: #222;
 }
+
 .another-games {
   position: fixed;
   top: 100px;
   left: 100px;
-  width: 50px; /* tamaño inicial solo icono */
-  height: 50px;
+  width: 60px; /* tamaño inicial solo icono */
+  height: 60px;
   background: #1a1a1a;
   border-radius: 50%;
   cursor: move;
@@ -47,6 +48,10 @@ html, body {
   display: none; /* oculto por defecto */
 }
 
+.another-games svg:hover{
+  cursor: pointer;
+}
+
 .another-games.expanded ul {
   display: block; /* visible cuando se expande */
 }
@@ -59,7 +64,7 @@ html, body {
   text-align: center;
 }
 .another-games ul li a{
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-decoration: none;
   color:aqua;
   font-weight: bold;
@@ -68,6 +73,7 @@ html, body {
   background: #555;
   cursor: pointer;
 }
+
 #score {
   position: absolute;
   top: 10px;
