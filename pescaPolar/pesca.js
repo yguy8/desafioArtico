@@ -61,6 +61,84 @@ icon.addEventListener("click", () => {
   }
 });
 
+//instrucciones del juego 
+const instructionsMenu = document.getElementById("instructions-menu");
+const instructionsIcon = document.getElementById("instructions-icon");
+
+let offsetX2, offsetY2, isDragging2 = false;
+
+// --- Drag con mouse ---
+instructionsMenu.addEventListener("mousedown", (e) => {
+  if (e.target.closest("#instructions-icon")) return; // no arrastrar si clic en icono
+  isDragging2 = true;
+  offsetX2 = e.clientX - instructionsMenu.offsetLeft;
+  offsetY2 = e.clientY - instructionsMenu.offsetTop;
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (isDragging2) {
+    instructionsMenu.style.left = (e.clientX - offsetX2) + "px";
+    instructionsMenu.style.top = (e.clientY - offsetY2) + "px";
+  }
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging2 = false;
+});
+
+// --- Drag con touch ---
+instructionsMenu.addEventListener("touchstart", (e) => {
+  if (e.target.closest("#instructions-icon")) return;
+  isDragging2 = true;
+  const touch = e.touches[0];
+  offsetX2 = touch.clientX - instructionsMenu.offsetLeft;
+  offsetY2 = touch.clientY - instructionsMenu.offsetTop;
+});
+
+document.addEventListener("touchmove", (e) => {
+  if (isDragging2) {
+    const touch = e.touches[0];
+    instructionsMenu.style.left = (touch.clientX - offsetX2) + "px";
+    instructionsMenu.style.top = (touch.clientY - offsetY2) + "px";
+  }
+});
+
+document.addEventListener("touchend", () => {
+  isDragging2 = false;
+});
+
+// --- Toggle expand/collapse ---
+instructionsIcon.addEventListener("click", () => {
+  instructionsMenu.classList.toggle("expanded");
+
+  if (instructionsMenu.classList.contains("expanded")) {
+    // SVG abierto (outline libro)
+    instructionsIcon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+           viewBox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2" 
+           stroke-linecap="round" stroke-linejoin="round" 
+           class="icon icon-tabler icons-tabler-outline icon-tabler-book">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+        <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+        <path d="M3 6l0 13" />
+        <path d="M12 6l0 13" />
+        <path d="M21 6l0 13" />
+      </svg>
+    `;
+  } else {
+    // SVG cerrado (libro lleno)
+    instructionsIcon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+           viewBox="0 0 24 24" fill="#c8ff00" 
+           class="icon icon-tabler icons-tabler-filled icon-tabler-book">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M21.5 5.134a1 1 0 0 1 .493 .748l.007 .118v13a1 1 0 0 1 -1.5 .866a8 8 0 0 0 -7.5 -.266v-15.174a10 10 0 0 1 8.5 .708m-10.5 -.707l.001 15.174a8 8 0 0 0 -7.234 .117l-.327 .18l-.103 .044l-.049 .016l-.11 .026l-.061 .01l-.117 .006h-.042l-.11 -.012l-.077 -.014l-.108 -.032l-.126 -.056l-.095 -.056l-.089 -.067l-.06 -.056l-.073 -.082l-.064 -.089l-.022 -.036l-.032 -.06l-.044 -.103l-.016 -.049l-.026 -.11l-.01 -.061l-.004 -.049l-.002 -13.068a1 1 0 0 1 .5 -.866a10 10 0 0 1 8.5 -.707" />
+      </svg>
+    `;
+  }
+});
+
 //canvas del juego 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -71,17 +149,47 @@ function resizeCanvas() {
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
-
+//variables globales
 const scoreEl = document.getElementById("score");
 
-let hook = { x: canvas.width/2, y: 0, w: 10, h: 20, vy: 0, active: false };
+let hook = { x: canvas.width/2, y: 90, w: 10, h: 20, vy: 0, active: false };
 let entities = [];
 let score = 0;
+let floatTexts = [];
 
-// sonidos
-const goodSound = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
-// sonido corto tipo game over
-const badSound = new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg");
+// --- Sonidos con Oscillator ---
+let soundOn = true;
+
+// función genérica para reproducir un tono
+const playTone = (freq = 440, time = 0.1, type = "sine") => {
+  if (!soundOn) return;
+  try {
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.value = 0.08; // volumen
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.start();
+    setTimeout(() => { osc.stop(); ac.close(); }, time * 1000);
+  } catch (_) { /* silencioso */ }
+};
+
+// sonidos adaptados al juego
+const goodSound = () => {
+  // tono alegre: dos notas rápidas ascendentes
+  playTone(440, 0.08, "triangle"); // A4
+  setTimeout(() => playTone(660, 0.08, "triangle"), 100); // E5
+};
+
+const badSound = () => {
+  // tono negativo: nota descendente corta
+  playTone(220, 0.15, "sawtooth"); // A3
+  setTimeout(() => playTone(150, 0.15, "sawtooth"), 120); // F#3
+};
+
 
 // Crear peces y algas
 function spawnEntity() {
@@ -126,22 +234,33 @@ function update() {
 
   // colisiones
   entities.forEach((f,i)=>{
-    if(hook.active &&
-       hook.x<hook.x+hook.w && hook.x+hook.w>f.x &&
-       hook.y<hook.y+hook.h && hook.y+hook.h>f.y){
-      if(f.type==="fish"){ 
-        score+=10; 
-        goodSound.play();
-      }
-      else { 
-        score-=5; 
-        badSound.play();
-      }
-      scoreEl.textContent="Puntos: "+score;
-      entities.splice(i,1);
-      hook.active=false; hook.y=0; hook.vy=0;
+  if(hook.active &&
+     hook.x<hook.x+hook.w && hook.x+hook.w>f.x &&
+     hook.y<hook.y+hook.h && hook.y+hook.h>f.y){
+    if(f.type==="fish"){ 
+      score+=10; 
+      goodSound();
+      floatTexts.push({ text:"+10", x:f.x, y:f.y, color:"lime", life:60 });
     }
-  });
+    else { 
+      score-=5; 
+      badSound();
+      floatTexts.push({ text:"-5", x:f.x, y:f.y, color:"red", life:60 });
+    }
+    scoreEl.textContent="Puntos: "+score;
+    entities.splice(i,1);
+    hook.active=false; hook.y=0; hook.vy=0;
+  }
+});
+
+
+  // actualizar textos flotantes
+floatTexts.forEach(t => {
+  t.y -= 1;      // sube poco a poco
+  t.life -= 1;   // reduce vida
+});
+floatTexts = floatTexts.filter(t => t.life > 0); // elimina los que ya murieron
+
 }
 
 function drawFish(f){
@@ -167,18 +286,50 @@ function drawFish(f){
   ctx.fill();
 }
 
-function drawAlga(f){
-  ctx.fillStyle=f.color;
+function drawAlga(f) {
+  // Degradado vertical para dar más realismo
+  const gradient = ctx.createLinearGradient(f.x, f.y, f.x, f.y + f.h);
+  gradient.addColorStop(0, "#006400"); // verde oscuro arriba
+  gradient.addColorStop(1, f.color);   // color base abajo
+
+  ctx.fillStyle = gradient;
   ctx.beginPath();
-  ctx.moveTo(f.x, f.y+f.h);
-  ctx.lineTo(f.x+f.w/2, f.y); // tallo simple
-  ctx.lineTo(f.x+f.w, f.y+f.h);
+
+  // Punto de inicio en la base izquierda
+  ctx.moveTo(f.x, f.y + f.h);
+
+  // Curva izquierda del tallo
+  ctx.bezierCurveTo(
+    f.x - f.w/2, f.y + f.h/2,   // control 1
+    f.x, f.y + f.h/3,           // control 2
+    f.x + f.w/4, f.y            // punto final arriba
+  );
+
+  // Curva derecha del tallo
+  ctx.bezierCurveTo(
+    f.x + f.w/2, f.y + f.h/3,   // control 1
+    f.x + f.w*1.2, f.y + f.h/2, // control 2
+    f.x + f.w, f.y + f.h        // punto final base derecha
+  );
+
   ctx.closePath();
+  ctx.fill();
+
+  // Dibujar hojas laterales para más detalle
+  ctx.beginPath();
+  ctx.moveTo(f.x + f.w/4, f.y + f.h/2);
+  ctx.quadraticCurveTo(f.x - f.w/2, f.y + f.h/2, f.x + f.w/6, f.y + f.h);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(f.x + f.w/2, f.y + f.h/3);
+  ctx.quadraticCurveTo(f.x + f.w*1.2, f.y + f.h/2, f.x + f.w/1.5, f.y + f.h);
   ctx.fill();
 }
 
+
 function draw() {
-  ctx.fillStyle="#1E90FF"; // agua
+  ctx.fillStyle="#5ba6f1ff"; // agua
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   // peces y algas
@@ -188,11 +339,24 @@ function draw() {
     } else { 
       drawAlga(f);
     }
+
+    // dibujar textos flotantes
+  floatTexts.forEach(t => {
+    ctx.font = "bold 20px Arial";
+    ctx.lineWidth = 3;            // grosor del borde
+    ctx.strokeStyle = "black";    // color del borde
+    ctx.strokeText(t.text, t.x, t.y);
+
+    ctx.fillStyle = t.color;      // color del relleno
+    ctx.fillText(t.text, t.x, t.y);
+  });
+
+
   });
 
   // caña mejorada
   ctx.strokeStyle="black";
-  ctx.lineWidth=3;
+  ctx.lineWidth=6;
   ctx.beginPath();
   ctx.moveTo(hook.x,0);
   ctx.lineTo(hook.x,hook.y);
@@ -200,7 +364,7 @@ function draw() {
 
   // anzuelo curvo
   ctx.strokeStyle="gray";
-  ctx.lineWidth=2;
+  ctx.lineWidth=4;
   ctx.beginPath();
   ctx.arc(hook.x, hook.y+hook.h/2, hook.w, Math.PI, Math.PI*2);
   ctx.stroke();
@@ -212,11 +376,17 @@ function loop(){
 }
 loop();
 
-// controles
-document.addEventListener("keydown",e=>{
+//controles
+document.addEventListener("keydown", e => {
   if(e.code==="ArrowLeft" || e.key==="a"){ hook.x-=20; }
   if(e.code==="ArrowRight" || e.key==="d"){ hook.x+=20; }
   if((e.code==="Space" || e.key===" ") && !hook.active){
     hook.active=true; hook.vy=5;
   }
+  // Toggle sonido con la tecla M
+  if(e.code==="KeyM" || e.key==="m"){
+    soundOn = !soundOn;
+    console.log("Sonido: " + (soundOn ? "ON" : "OFF"));
+  }
 });
+

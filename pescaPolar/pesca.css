@@ -1,3 +1,10 @@
+:root{
+  --amarillo : #ffff5f;
+  --letras:aqua;
+  --fuente:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --grosor-fuente:bold;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -5,7 +12,7 @@ html, body {
   overflow: hidden;
   background: #87CEEB; /* cielo */
 }
-
+/*menu que incluye los otros juegos a los que se puede ingresar*/
 .another-games {
   position: fixed;
   top: 100px;
@@ -19,6 +26,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 999;
 }
 .another-games.expanded {
   width: 200px;
@@ -31,8 +39,8 @@ html, body {
 
 .another-games h3 {
   display: none; /* oculto por defecto */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: rgb(255, 255, 95);
+  font-family: var(--fuente);
+  color:var(--amarillo);
   margin: 0;
   text-align: center;
 }
@@ -64,16 +72,75 @@ html, body {
   text-align: center;
 }
 .another-games ul li a{
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--fuente);
   text-decoration: none;
-  color:aqua;
-  font-weight: bold;
+  color:var(--letras);
+  font-weight: var(--grosor-fuente);
 }
 .another-games ul li:hover {
   background: #555;
   cursor: pointer;
 }
 
+/*instrucciones del juego*/
+.instructions-menu {
+  position: absolute;
+  top: 108px;
+  left: 40px;
+  background: rgba(24, 24, 24, 0.9);
+  border-radius: 8px;
+  cursor: move;
+  z-index: 999;
+
+  /* Estado cerrado */
+  width: 50px;              /* cuadro más visible */
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;  /* centra el SVG */
+}
+
+.instructions-menu.expanded {
+  /* Estado abierto */
+  width: 240px;
+  height: auto;
+  padding: 8px;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.instructions-menu h3 {
+  display: none; /* oculto por defecto */
+  margin: 5px 0;
+  font-size: 16px;
+  color: var(--amarillo);
+  font-weight: var(--grosor-fuente);
+  font-family: var(--fuente);
+  text-align: center;
+}
+
+.instructions-menu.expanded h3 {
+  display: block; /* Solo visible cuando el menú está expandido */
+}
+
+.instructions-content {
+  display: none; /* Oculto por defecto */
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.instructions-menu.expanded .instructions-content {
+  display: block; /* Se muestra al expandir */
+  color: var(--letras);
+  font-family: var(--fuente);
+  font-weight: var(--grosor-fuente);
+}
+
+#instructions-icon {
+  cursor: pointer;
+  display: inline-block;
+}
 
 #score {
   position: absolute;
@@ -85,7 +152,7 @@ html, body {
   padding: 10px;
   color: rgb(255, 255, 255);
   font-size: 24px;
-  font-family: sans-serif;
+  font-family: var(--fuente);
 }
 
 canvas {
