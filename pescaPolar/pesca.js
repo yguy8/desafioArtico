@@ -215,10 +215,20 @@ setInterval(spawnEntity, 1500);
 
 function update() {
   if(hook.active){
-    hook.y += hook.vy;
-    if(hook.y>canvas.height-50){ hook.vy=-5; }
-    if(hook.y<0){ hook.active=false; hook.y=0; hook.vy=0; }
+  hook.y += hook.vy;
+
+  // límite inferior
+  if(hook.y > canvas.height - 50){
+    hook.y = canvas.height - 50; // se queda en el fondo
+    hook.vy = 0;                 // detiene movimiento hacia abajo
   }
+
+  // límite superior
+  if(hook.y < 0){
+    hook.y = 0;   // se queda arriba
+    hook.vy = 0;  // detiene movimiento hacia arriba
+  }
+}
 
   entities.forEach(f=>{
     f.x+=f.vx;
