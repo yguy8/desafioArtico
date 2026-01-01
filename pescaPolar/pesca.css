@@ -1,6 +1,15 @@
 :root{
+  /*videojuego*/
+  --fondo:#87ceeb;
+  /*menu*/
+  --fondo-menu:#1a1a1a;
+  --lista:#444;
+  --lista-hover:#555;
+  /*instrcucciones*/
+  --fondo-instrucciones:rgba(24, 24, 24, 0.9);
+  /*estilo de las letras*/
   --amarillo : #ffff5f;
-  --letras:aqua;
+  --color-letras:aqua;
   --fuente:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   --grosor-fuente:bold;
 }
@@ -10,23 +19,22 @@ html, body {
   padding: 0;
   height: 100%;
   overflow: hidden;
-  background: #87CEEB; /* cielo */
+  background: var(--fondo); /* cielo */
 }
-/*menu que incluye los otros juegos a los que se puede ingresar*/
+
+/*menu de videojuegos*/
 .another-games {
   position: fixed;
   top: 100px;
   left: 100px;
   width: 60px; /* tamaño inicial solo icono */
   height: 60px;
-  background: #1a1a1a;
+  background: var(--fondo-menu);
   border-radius: 50%;
   cursor: move;
-  box-shadow: 0 4px 8px rgba(39, 39, 39, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
 }
 .another-games.expanded {
   width: 200px;
@@ -66,7 +74,7 @@ html, body {
 
 .another-games ul li {
   padding: 8px;
-  background: #444;
+  background: var(--lista);
   margin-bottom: 5px;
   border-radius: 4px;
   text-align: center;
@@ -74,11 +82,11 @@ html, body {
 .another-games ul li a{
   font-family: var(--fuente);
   text-decoration: none;
-  color:var(--letras);
-  font-weight: var(--grosor-fuente);
+  color:var(--color-letras);
+  font-weight: bold;
 }
 .another-games ul li:hover {
-  background: #555;
+  background:var(--lista-hover);
   cursor: pointer;
 }
 
@@ -87,7 +95,7 @@ html, body {
   position: absolute;
   top: 108px;
   left: 40px;
-  background: rgba(24, 24, 24, 0.9);
+  background: var(--fondo-instrucciones);
   border-radius: 8px;
   cursor: move;
   z-index: 999;
@@ -132,7 +140,7 @@ html, body {
 
 .instructions-menu.expanded .instructions-content {
   display: block; /* Se muestra al expandir */
-  color: var(--letras);
+  color: var(--color-letras);
   font-family: var(--fuente);
   font-weight: var(--grosor-fuente);
 }
