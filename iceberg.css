@@ -19,9 +19,31 @@ body {
     text-align: center;
 }
 
-/*  === Encabezado ===  */
-header {
-    padding: 60px 20px;
+body.dark{
+    --azul-profundo:#58c0fd;
+    --gris-polar:#ccced9;
+    --azul-oscuro:#364373;
+    --azul-opaco:#425270;
+    --azul-marino:#4589b1;
+    --azul-chicle:#343961;
+    --azul-cielo:#b3f0ff;
+    --hielo:#313131;
+    --amarillo-pingüino:#242424;
+    --naranja:#000000;
+}
+
+/* Estilos base del botón */
+.btn-theme {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+header{
+    padding: 40px;
 }
 
 header h1 {
@@ -41,6 +63,15 @@ header p{
 }
 
 /* === NAV BAR === */
+/* botón de modo */
+/* Por defecto (Modo Claro), escondemos el icono relleno */
+#icon-dark { display: none; }
+#icon-light { display: block; }
+
+/* Cuando el body tiene la clase .dark-mode, invertimos */
+body.dark-mode #icon-light { display: none; }
+body.dark-mode #icon-dark { display: block; }
+
 nav {
     background: rgba(255,255,255,0.05);
     backdrop-filter: blur(6px);
@@ -112,7 +143,7 @@ nav ul li a:hover::after {
 .cube {
     width: 40px;
     height: 40px;
-    background: var(--hielo);
+    background: #b3f0ff;
     border: 2px solid var(--azul-chicle);
     border-radius: 6px;
     box-shadow: inset -3px -3px 6px rgba(255,255,255,0.6),
@@ -132,7 +163,7 @@ nav ul li a:hover::after {
 /* === MAIN AVENTURA === */
 #aventura {
     padding: 60px 20px;
-    background: linear-gradient(180deg, var(--azul-profundo) 0%, var(--azul-marino) 100%);
+    background: var(--azul-profundo);
     color: var(--amarillo-pingüino);
     text-align: center;
 }
@@ -248,7 +279,7 @@ nav ul li a:hover::after {
     font-size: 1.4em;
 }
 
-svg{
+.control{
     animation: float 4s ease-in-out infinite;
 }
 
