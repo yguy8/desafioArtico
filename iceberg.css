@@ -26,7 +26,7 @@ body.dark{
     --azul-opaco:#425270;
     --azul-marino:#4589b1;
     --azul-chicle:#343961;
-    --azul-cielo:#b3f0ff;
+    --azul-cielo:#0a043d;
     --hielo:#313131;
     --amarillo-pingüino:#242424;
     --naranja:#000000;
@@ -114,6 +114,7 @@ nav ul li a:hover {
     color: var(--amarillo-pingüino);
     transform: scale(1.1);
     text-shadow: 0 0 20px var(--azul-profundo), 0 0 20px var(--gris-polar);
+    text-decoration: underline;
 }
 
 /* Línea brillante debajo al hacer hover */
@@ -374,6 +375,7 @@ footer {
 .footer-links a:hover {
     color: var(--azul-chicle);
     text-shadow: 0 0 10px var(--azul-cielo);
+    text-decoration: underline;
 }
 
 .credits {
