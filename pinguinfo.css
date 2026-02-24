@@ -142,7 +142,7 @@ nav ul li a:hover { color: var(--naranja); }
 
 /* Botones carrusel */
 .prev, .next {
-    background: var(--amarillo);
+    background: var(--amarillo); 
     border-radius: 10px;
     cursor: pointer;
     color: var(--negro);
